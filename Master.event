@@ -1,0 +1,60 @@
+
+// General buildfile format:
+// Title your English, clean FE8 "Clean.gba", and place it in this directory.
+
+#ifdef _FE8_
+	
+	#include "EAstdlib.event"
+	#include "Tools/Tool Helpers.txt" // Useful Event Assembler includes.
+	#include "Extensions/Hack Installation.txt"
+	
+	#include "Definitions.event" // Custom definitions can go in here.
+	
+	// Free space definitions
+	#define FreeSpace // These two are to prevent hacks from definining free space on their own.
+	#define Free_Space
+	#define FreeSpaceA $B2A610 // Ends at $C00000.
+	#define FreeSpaceB $E47200 // Ends at $EE0000.
+	#define FreeSpaceC $EFB2E0 // Ends at $FE0000.
+	
+	#define EndOfROM $FE4000 // Ends at $2000000.
+	#define EndofROM EndOfROM
+	
+	#define BLRange $1C2270 // Ends at $1C32C8. Used for ASM BL cals: NOT GENERAL PURPOSE.
+	#define FreeSpaceBLRange BLRange
+	#define BlRange BLRange
+	
+	ORG 0x1000000 // Normal master installer
+	
+	#include "_FE8EssentialFixes.event"
+	
+	// Install text
+	#include "Text/Install Text Data.event"
+		
+	// Install CSV tables
+	#include "Tables/Table Installer.event"
+	
+	// Install graphics
+	#include "Tileset/Tileset and Animation Installer.event"
+	
+	// Install ASM hacks
+	#include "Engine Hack/HackInstaller.event"
+	
+	// Install music
+	#include "Music/MusicInstaller.event"
+	
+	// Install maps
+	#include "Map/Master Map Installer.event"
+	
+	// Install events
+	#include "Event/EventInstaller.event"
+	
+	// Install Graphics
+	#include "Graphics/MasterGraphicalInstaller.event"
+	
+	//ASSERT $C00000 - CURRENTOFFSET // Ensures that we don't pass the end of the free space block.
+	
+	ALIGN 16
+	WORD 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 // Prevent NUPS from cutting off the last few bytes.
+	
+#endif
